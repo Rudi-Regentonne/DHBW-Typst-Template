@@ -1,7 +1,7 @@
 #let code(
   caption: none, // content of caption bubble (string, none)
   bgcolor: rgb("#eaeaea"), // back ground color (color)
-  strokecolor: 1pt + maroon, // frame color (color)
+  strokecolor: auto, // frame color (color)
   hlcolor: auto, // color to use for highlighted lines (auto, color)
   width: 100%,
   radius: 3pt,
@@ -20,10 +20,15 @@
   if highlight == none {
     highlight = ()
   }
+  let final_strokecolor = if strokecolor == auto {
+    0.5pt + bgcolor.darken(20%)
+  } else {
+    strokecolor
+  }
   let code_block = block(
     width: width,
     fill: bgcolor,
-    stroke: strokecolor,
+    stroke: final_strokecolor,
     radius: radius,
     inset: inset,
     clip: false,

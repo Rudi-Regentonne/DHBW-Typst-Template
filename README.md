@@ -12,7 +12,11 @@ Diese Vorlage ist eine Typst-Implementierung, die sich am Aufbau/Look der gängi
 
 ## Benutzung
 
-Die meiste Nutzung steht in der `main.pdf`. Kurzfassung: In `main.typ` importierst du `bericht` und konfigurierst alles über `#show: bericht.with(...)`. Der eigentliche Inhalt kommt als Body-Block hinten dran.
+Bis das im Typst universe verfügbar ist kann es lokal in diese Ordner eingefügt werden
+
+- Linux: ~/.local/share/typst/packages/local/bericht/0.1.0
+- Windows: Wenn du mit dem 4-stündigen Zwangs-Update fertig bist, hier entlang: %APPDATA%\typst\packages\local\bericht\0.1.0
+- macOS: : Merkste selber, wa? (Kauf dir halt 'nen vernünftigen Rechner).
 
 ## Typst Doku
 

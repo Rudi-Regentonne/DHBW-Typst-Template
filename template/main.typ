@@ -1,6 +1,6 @@
-#import "template-files/template.typ": bericht
+#import "@local/turbocharged-dhbw:0.1.0": bericht
 #show: bericht.with(
-  AbgabeDatum: "32. Nozember 2000",
+  AbgabeDatum: "32. Nozember 13 v. Chr.",
   Pruefung: "T4_2000",
   Autor: "Rudi Regentonne",
   BetreuerDHBW: "Prof. Dr. Jürgen R.",
@@ -44,14 +44,6 @@
 
 
 = Anhang
-//counter(appendix).update(0)
-//show: appsec.with(it => counter(appendix).step(it))
-#show heading.where(level: 1): set block(above: 1em, below: 1em)
-#show heading.where(level: 1): it => [
-  #set text(dhbw-blue)
-  //counter(appendix).display("A.1")
-  #it.body
-]
 
-//include "appendixA.typ"
+#include "content/anhang.typ"
 
