@@ -14,11 +14,12 @@ Diese Vorlage ist eine Typst-Implementierung, die sich am Aufbau/Look der gängi
 
 Bis das im Typst universe verfügbar ist kann es lokal in diese Ordner eingefügt werden
 
-- Linux: ~/.local/share/typst/packages/local/bericht/0.1.0
-- Windows: Wenn du mit dem 4-stündigen Zwangs-Update fertig bist, hier entlang: %APPDATA%\typst\packages\local\bericht\0.1.0
+- Linux: ~/.local/share/typst/packages/turbocharged-dhbw/bericht/0.1.0
+- Windows: Wenn du mit dem 4-stündigen Zwangs-Update fertig bist, hier entlang: %APPDATA%\typst\packages\local\turbocharged-dhbw\0.1.0
 - macOS: : Merkste selber, wa? (Kauf dir halt 'nen vernünftigen Rechner).
 
 ## Typst Doku
 
 - https://typst.app/docs/  
   (Die Doku ist wirklich brauchbar.)
+
