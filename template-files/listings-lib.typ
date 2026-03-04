@@ -41,7 +41,7 @@
           }
           (
             (auto, 1fr),
-            (right + horizon, left),
+            (right + top, left + top),
             e => {
               let (i, l) = e
               let n = i + firstnumber

@@ -4,48 +4,55 @@
 
 = Konfiguration der Vorlage (Main-Funktion)
 
-Die Vorlage wird über die Funktion `bericht` konfiguriert. Hier ist eine Übersicht aller Parameter, die an die Funktion übergeben werden können:
+Die Vorlage wird über die Funktion `bericht` in der `main.typ` konfiguriert. Hier ist eine Übersicht aller Parameter, die an die Funktion übergeben werden können:
 
 == Persönliche und formale Daten
 - `Autor`: Der vollständige Name des Verfassers (Content).
 - `MatrikelNummer`: Die Matrikelnummer zur eindeutigen Identifikation (String/Content).
 - `Kurs`: Die Kursbezeichnung (z. B. "TINF22B1").
 - `Studiengang`: Der Name des Studiengangs (z. B. "Informatik").
+- `Stadt`: Standort des Betriebs.
+  - Wird genutzt für den Betriebsstandort und gegebenenfalls in der Erklärung sonst Optional
 
 == Projektspezifische Daten
 - `Titel`: Das Thema der Arbeit, erscheint groß auf dem Deckblatt.
 - `Was`: Die Art der Arbeit (z. B. "Praxisbericht", "Bachelorarbeit").
-- `Pruefung`: Die Modulbezeichnung oder Prüfungsnummer (z. B. "T3_2000").
-- `AbgabeDatum`: Das Datum der Einreichung.
-- `Dauer`: Der Bearbeitungszeitraum (z. B. "12 Wochen" oder "560 Stunden").
+- `Pruefung`: Die Modulbezeichnung oder Prüfungsnummer (Optional).
+- `AbgabeDatum`: Das Datum der Einreichung (Optional).
+- `Dauer`: Der Bearbeitungszeitraum (Optional).
 
 == Unternehmensdaten
-- `FirmenName`: Name des Ausbildungsbetriebs.
-- `FirmenStadt`: Standort des Betriebs (wird für die Erklärung benötigt).
-- `Firmenlogo`: Das Logo der Firma. Einbindung via `image("pfad/zu/logo.png")`.
-- `BetreuerFirma`: Name des Ansprechpartners im Betrieb.
-- `BetreuerDHBW`: Name des betreuenden Dozenten oder Gutachters der DHBW.
+- `FirmenName`: Name des Ausbildungsbetriebs (Optional).
+- `Firmenlogo`: Das Logo der Firma. Einbindung via `image("pfad/zu/logo.png")` (Optional).
+- `BetreuerFirma`: Name des Ansprechpartners im Betrieb (Optional).
+- `BetreuerDHBW`: Name des betreuenden Dozenten oder Gutachters (Optional).
+
+== Hochschuldaten
+- `Hochschule`: Name der Hochschule. Falls nicht gesetzt, wird "Duale Hochschule Baden-Württemberg Karlsruhe" verwendet.
+- `Hochschullogo`: Das Logo der Hochschule. Einbindung via `image("pfad/zu/logo.png")`. Falls nicht gesetzt, wird das Standard-DHBW-Logo verwendet.
 
 == Dokumentensteuerung
-- `Sperrvermerk`: Ein boolescher Wert (`true` oder `false`). Bei `true` wird automatisch ein Sperrvermerk in die Erklärung eingefügt.
-- `Zusammenfassung`: Der Inhalt des Abstracts. Am besten via `include "content/abstract.typ"` einbinden.
-- `acronyms`: Ein Dictionary oder eine YAML-Datei (`yaml("abk.yml")`) mit Abkürzungen für das automatische Verzeichnis.
-- `bibliography-content`: Die Literaturquelle, eingebunden über die `bibliography()`-Funktion.
+- `Sperrvermerk`: Soll ein Sperrvermerk eingefügt werden (Optional).
+- `SperrvermerkText`: Eigener Text für den Sperrvermerk (Optional).
+- `Erklaerung`: Soll eine Erklärung eingefügt werden (Optional).
+- `ErklaerungTitel`: Eigener Titel für die Erklärung (Optional).
+- `ErklaerungText`: Eigener Text für die Erklärung (Optional).
+- `Zusammenfassung`: Der Inhalt des Abstracts. Am besten via `include "content/abstract.typ"` einbinden (Optional).
+- `acronyms`: Ein Dictionary oder eine YAML-Datei (`yaml("abk.yml")`) mit Abkürzungen für das automatische Verzeichnis (Optional).
+- `bibliography-content`: Die Literaturquelle, eingebunden über die `bibliography()`-Funktion (Optional).
 
 == Beispiel für den Aufruf
 Ein typischer Aufruf in der `main.typ` sieht wie folgt aus:
 
-#code(firstnumber: 1, stepnumber: 1, numbers: true, caption: "Beispielaufruf")[```typst
-#import "@local/turbocharged-dhbw:0.1.0" : bericht
-
+#code(firstnumber: 1, stepnumber: 1, numbers: true, caption: "Beispielaufruf", highlight: (3, 10))[```typst
 #show: bericht.with(
-  Autor: "Rudi Regentonne",
-  Titel: "Analyse des Kaffeeverbrauchs im Homeoffice",
-  Studiengang: "Angewandte Praktikantenwissenschaften",
-  Firmenlogo: image("assets/firma-logo.png"),
-  Sperrvermerk: true,
-  Zusammenfassung: include "content/abstract.typ",
-  acronyms: yaml("abk.yml"),
+Autor: "Rudi Regentonne",
+Titel: "Analyse des Kaffeeverbrauchs im Homeoffice",
+Studiengang: "Angewandte Informatik",
+Firmenlogo: image("assets/firma-logo.png"),
+Sperrvermerk: true,
+Zusammenfassung: include "content/abstract.typ",
+acronyms: yaml("abk.yml"),
 )
 ```]
 
@@ -73,7 +80,7 @@ Inline kann mit einfachen Backticks eingebunden werden ``` `Inlinecode` ```.
 #box[
 
   Für Codeblöcke kann entweder ````typst ```Sprache code``` ```` oder ````typst
-    #import "@local/turbocharged-dhbw:0.1.0": code
+    #import "../template-files/listings-lib.typ": code
     #code(
       firstnumber: 1,
       stepnumber: 1,

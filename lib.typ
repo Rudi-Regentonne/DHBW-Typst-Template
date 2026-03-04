@@ -1,7 +1,7 @@
 #import "template-files/listings-lib.typ": code
 #let bericht(
   Autor: [Autor],
-  Pruefung: [Pruefung],
+  Pruefung: none,
   Titel: [Titel],
   Studiengang: [Studiengang],
   AbgabeDatum: none,
@@ -9,14 +9,20 @@
   MatrikelNummer: none,
   Kurs: none,
   FirmenName: none,
-  FirmenStadt: none,
+  Stadt: none,
   BetreuerFirma: none,
   BetreuerDHBW: none,
   Was: [Was],
   Sperrvermerk: true,
+  SperrvermerkText: none,
   Zusammenfassung: none,
   Firmenlogo: none,
   acronyms: (),
+  Hochschullogo: none,
+  Hochschule: none,
+  Erklaerung: true,
+  ErklaerungText: none,
+  ErklaerungTitel: none,
   bibliography-content: none,
   body,
 ) = {
@@ -71,22 +77,30 @@
   set math.equation(numbering: "(1)")
   set figure(numbering: "1")
   // Title page
+  box(
+    height: 2cm,
+    grid(
 
-  grid(
-    columns: (1fr, 1fr),
+      columns: (1fr, 1fr),
 
-    [
-      #align(left)[
-        #if Firmenlogo != none {
-          Firmenlogo
-        }
-      ]
-    ],
-    [
-      #align(right)[
-        #image("template/assets/dhbw-logo.png", width: 4cm)
-      ]
-    ],
+      [
+        #align(left)[
+          #if Firmenlogo != none {
+            Firmenlogo
+          }
+        ]
+      ],
+      [
+
+        #align(right)[
+          #if Hochschullogo == none {
+            image("template-files/dhbw-logo.png")
+          } else {
+            Hochschullogo
+          }
+        ]
+      ],
+    ),
   )
 
   align(center, [
@@ -96,15 +110,21 @@
     #v(1cm)
 
     #text(16pt)[
-      für das Modul
-      #v(0.5cm)
-      #Pruefung
-      #v(0.5cm)
+      #if Pruefung != none {
+        [für das Modul]
+        v(0.5cm)
+        Pruefung
+        v(0.5cm)
+      }
       des Studienganges #Studiengang
       #v(0.5cm)
       an der
       #v(0.5cm)
-      Dualen Hochschule Baden-Württemberg Karlsruhe
+      #if Hochschule == none {
+        [Dualen Hochschule Baden-Württemberg Karlsruhe]
+      } else {
+        Hochschule
+      }
     ]
     #v(0.5cm)
     #text(16pt)[von]
@@ -123,7 +143,7 @@
     ("Matrikelnummer", MatrikelNummer),
     ("Kurs", Kurs),
     ("Ausbildungsfirma", FirmenName),
-    ("", FirmenStadt),
+    ("", if FirmenName != none { Stadt }),
     ("Betreuer der Ausbildungsfirma", BetreuerFirma),
     ("Gutachter der Studienakademie", BetreuerDHBW),
   ).filter(it => it.at(1) != none)
@@ -140,9 +160,17 @@
   )
 
   // Declaration
-  pagebreak()
   import "template-files/erklaerung.typ": erklaerung
-  erklaerung(Autor: Autor, FirmenStadt: FirmenStadt, Sperrvermerk: Sperrvermerk)
+
+  erklaerung(
+    Autor: Autor,
+    FirmenStadt: Stadt,
+    Sperrvermerk: Sperrvermerk,
+    SperrvermerkText: SperrvermerkText,
+    ErklaerungText: ErklaerungText,
+    ErklaerungTitel: ErklaerungTitel,
+    Erklaerung: Erklaerung,
+  )
 
 
   set page(numbering: "I")

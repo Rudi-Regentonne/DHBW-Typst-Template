@@ -2,9 +2,9 @@
 name = "turbocharged-dhbw"
 version = "0.1.0"
 entrypoint = "lib.typ"
-authors = ["Rudi Regentonne <@Rudi-Regentonne>"]
+authors = ["Rudi Regentonne"]
 license = "MIT-0" 
-description = "Typst template für die DHBW (in Anlehnung an die LaTeX-Vorlage)"
+description = "Typst template für die DHBW oder andere Hochschulen/Unis (in Anlehnung an die LaTeX-Vorlage)"
 repository = "https://github.com/Rudi-Regentonne/DHBW-Typst-Template"
 keywords = ["dhbw", "thesis"]
 categories = ["paper", "thesis", "report"]

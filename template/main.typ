@@ -1,13 +1,13 @@
 #import "@local/turbocharged-dhbw:0.1.0": bericht
 #show: bericht.with(
-  AbgabeDatum: "32. Nozember 13 v. Chr.",
+  AbgabeDatum: "32. Nozember 2000",
   Pruefung: "T4_2000",
   Autor: "Rudi Regentonne",
-  BetreuerDHBW: "Prof. Dr. Jürgen R.",
+  //BetreuerDHBW: "Prof. Dr. Jürgen R.",
   BetreuerFirma: "Andi Mauer",
   Dauer: "560 Stunden",
   FirmenName: "Saftladen GmbH",
-  FirmenStadt: "Bielefeld",
+  Stadt: "Bielefeld",
   Firmenlogo: image("assets/dhbw-logo.png"),
   MatrikelNummer: "123456789",
   Studiengang: "Informatik / Angewandte Informatik",

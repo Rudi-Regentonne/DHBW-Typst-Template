@@ -1,6 +1,6 @@
-# Typst template für DHBW (in Anlehnung an die LaTeX-Vorlage)
+# Typst template für DHBW oder andere Hochschulen/Unis (in Anlehnung an die LaTeX-Vorlage)
 
-Diese Vorlage ist eine Typst-Implementierung, die sich am Aufbau/Look der gängigen DHBW-LaTeX-Vorlage orientiert (Deckblatt, Verzeichnisse, Nummerierungen, typische Struktur).
+Diese Vorlage ist eine Typst-Implementierung, die sich am Aufbau/Look der gängigen DHBW-LaTeX-Vorlage orientiert (Deckblatt, Verzeichnisse, Nummerierungen, typische Struktur). Kann allerdings auch für andere Hochschulen/Unis angepasst werden.
 
 ## Warum Typst und nicht LaTeX?
 
@@ -22,4 +22,3 @@ Bis das im Typst universe verfügbar ist kann es lokal in diese Ordner eingefüg
 
 - https://typst.app/docs/  
   (Die Doku ist wirklich brauchbar.)
-
