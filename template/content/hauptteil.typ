@@ -40,6 +40,7 @@ Die Vorlage wird über die Funktion `bericht` in der `main.typ` konfiguriert. Hi
 - `Zusammenfassung`: Der Inhalt des Abstracts. Am besten via `include "content/abstract.typ"` einbinden (Optional).
 - `acronyms`: Ein Dictionary oder eine YAML-Datei (`yaml("abk.yml")`) mit Abkürzungen für das automatische Verzeichnis (Optional).
 - `bibliography-content`: Die Literaturquelle, eingebunden über die `bibliography()`-Funktion (Optional).
+- `Deckblatt`: Überschreibt das Deckblatt mit eigenem Content Am besten via `include "filename.typ"` (Optional).
 
 == Beispiel für den Aufruf
 Ein typischer Aufruf in der `main.typ` sieht wie folgt aus:

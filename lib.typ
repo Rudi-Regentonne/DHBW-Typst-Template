@@ -24,6 +24,7 @@
   ErklaerungText: none,
   ErklaerungTitel: none,
   bibliography-content: none,
+  Deckblatt: none,
   body,
 ) = {
   import "@preview/hydra:0.6.2": hydra
@@ -76,6 +77,9 @@
 
   set math.equation(numbering: "(1)")
   set figure(numbering: "1")
+
+  if Deckblatt == none {
+
   // Title page
   box(
     height: 2cm,
@@ -158,6 +162,9 @@
     // Zellinnenabstand
     ..rows.flatten().map(it => [#it]),
   )
+  } else {
+    Deckblatt
+  }
 
   // Declaration
   import "template-files/erklaerung.typ": erklaerung
