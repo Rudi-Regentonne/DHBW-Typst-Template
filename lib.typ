@@ -25,11 +25,55 @@
   ErklaerungTitel: none,
   bibliography-content: none,
   Deckblatt: none,
+  lang: "de",
   body,
 ) = {
   import "@preview/hydra:0.6.2": hydra
   import "@preview/acrostiche:0.7.0": *
 
+  let i18n = if lang == "en" {(
+    fuer-modul: "for the module",
+    des-studienganges: "of the study programme",
+    an-der: "at the",
+    hochschule-default: "Baden-Württemberg Cooperative State University Karlsruhe",
+    von: "by",
+    abgabedatum: "Submission date",
+    bearbeitungszeitraum: "Processing period",
+    matrikelnummer: "Student ID",
+    kurs: "Course",
+    ausbildungsfirma: "Training company",
+    betreuer-firma: "Company supervisor",
+    gutachter-dhbw: "Academic assessor",
+    kapitel: "Chapter",
+    abbildungsverzeichnis: "List of Figures",
+    abkuerzungsverzeichnis: "List of Abbreviations",
+    tabellenverzeichnis: "List of Tables",
+    quellcodeverzeichnis: "List of Source Code",
+    quellcode: "Source code",
+    formelverzeichnis: "List of Formulas",
+    literaturverzeichnis: "Bibliography",
+  )} else {(
+    fuer-modul: "für das Modul",
+    des-studienganges: "des Studienganges",
+    an-der: "an der",
+    hochschule-default: "Dualen Hochschule Baden-Württemberg Karlsruhe",
+    von: "von",
+    abgabedatum: "Abgabedatum",
+    bearbeitungszeitraum: "Bearbeitungszeitraum",
+    matrikelnummer: "Matrikelnummer",
+    kurs: "Kurs",
+    ausbildungsfirma: "Ausbildungsfirma",
+    betreuer-firma: "Betreuer der Ausbildungsfirma",
+    gutachter-dhbw: "Gutachter der Studienakademie",
+    kapitel: "Kapitel",
+    abbildungsverzeichnis: "Abbildungsverzeichnis",
+    abkuerzungsverzeichnis: "Abkürzungsverzeichnis",
+    tabellenverzeichnis: "Tabellenverzeichnis",
+    quellcodeverzeichnis: "Quellcodeverzeichnis",
+    quellcode: "Quellcode",
+    formelverzeichnis: "Formelverzeichnis",
+    literaturverzeichnis: "Literaturverzeichnis",
+  )}
 
   if acronyms.len() > 0 {
     init-acronyms(acronyms)
@@ -73,10 +117,12 @@
     spacing: 1em,
     leading: 0.8em,
   )
-  set text(lang: "de")
+  set text(lang: lang)
 
   set math.equation(numbering: "(1)")
   set figure(numbering: "1")
+
+  show figure.where(kind: "listing"): set figure(supplement: i18n.quellcode)
 
   if Deckblatt == none {
 
@@ -115,41 +161,41 @@
 
     #text(16pt)[
       #if Pruefung != none {
-        [für das Modul]
+        [#i18n.fuer-modul]
         v(0.5cm)
         Pruefung
         v(0.5cm)
       }
-      des Studienganges #Studiengang
+      #i18n.des-studienganges #Studiengang
       #v(0.5cm)
-      an der
+      #i18n.an-der
       #v(0.5cm)
       #if Hochschule == none {
-        [Dualen Hochschule Baden-Württemberg Karlsruhe]
+        [#i18n.hochschule-default]
       } else {
         Hochschule
       }
     ]
     #v(0.5cm)
-    #text(16pt)[von]
+    #text(16pt)[#i18n.von]
     #v(0.5cm)
     #text(16pt, weight: "bold")[#Autor]
     #v(1cm)
     #if AbgabeDatum != none {
-      text(14pt)[Abgabedatum #AbgabeDatum]
+      text(14pt)[#i18n.abgabedatum #AbgabeDatum]
     }
   ])
   v(1fr)
 
 
   let rows = (
-    ("Bearbeitungszeitraum", Dauer),
-    ("Matrikelnummer", MatrikelNummer),
-    ("Kurs", Kurs),
-    ("Ausbildungsfirma", FirmenName),
+    (i18n.bearbeitungszeitraum, Dauer),
+    (i18n.matrikelnummer, MatrikelNummer),
+    (i18n.kurs, Kurs),
+    (i18n.ausbildungsfirma, FirmenName),
     ("", if FirmenName != none { Stadt }),
-    ("Betreuer der Ausbildungsfirma", BetreuerFirma),
-    ("Gutachter der Studienakademie", BetreuerDHBW),
+    (i18n.betreuer-firma, BetreuerFirma),
+    (i18n.gutachter-dhbw, BetreuerDHBW),
   ).filter(it => it.at(1) != none)
   table(
     columns: (50%, 50%),
@@ -177,6 +223,7 @@
     ErklaerungText: ErklaerungText,
     ErklaerungTitel: ErklaerungTitel,
     Erklaerung: Erklaerung,
+    lang: lang,
   )
 
 
@@ -198,10 +245,9 @@
     set align(left)
     set text(20pt)
     set par(justify: true, leading: 1em, spacing: 1.5em)
-    let chapter_prefix_content = ""
     if it.numbering != none {
       v(1em)
-      text(20pt)[Kapitel #counter(heading).get().first()]
+      text(20pt)[#i18n.kapitel #counter(heading).get().first()]
       v(1em)
     } else {
       v(0.5em)
@@ -265,7 +311,7 @@
     if figures.len() > 0 {
       pagebreak()
       outline(
-        title: text()[Abbildungsverzeichnis],
+        title: text()[#i18n.abbildungsverzeichnis],
         target: figure.where(kind: image),
       )
     }
@@ -278,7 +324,7 @@
 
       print-index(
         row-gutter: 1em,
-        title: heading(level: 1, numbering: none, outlined: true)[Abkürzungsverzeichnis],
+        title: heading(level: 1, numbering: none, outlined: true)[#i18n.abkuerzungsverzeichnis],
         delimiter: "",
         clickable: true,
       )
@@ -289,7 +335,7 @@
     if tables.len() > 0 {
       pagebreak()
       outline(
-        title: heading(level: 1, numbering: none, outlined: true)[Tabellenverzeichnis],
+        title: heading(level: 1, numbering: none, outlined: true)[#i18n.tabellenverzeichnis],
         target: figure.where(kind: table),
       )
     }
@@ -298,22 +344,18 @@
     let listings = query(figure.where(kind: "listing"))
     if listings.len() > 0 {
       outline(
-        title: heading(level: 1, numbering: none, outlined: true)[Quellcodeverzeichnis],
+        title: heading(level: 1, numbering: none, outlined: true)[#i18n.quellcodeverzeichnis],
         target: figure.where(kind: "listing"),
       )
     }
 
 
     // List of formulas
-
-    // Anzahl der blockartigen Gleichungen ermitteln
     let eqs = query(math.equation.where(block: true))
-    // Nur anzeigen, wenn mindestens eine Gleichung existiert
-
     if eqs.len() > 0 {
       pagebreak()
       outline(
-        title: heading(level: 1, numbering: none, outlined: true)[Formelverzeichnis],
+        title: heading(level: 1, numbering: none, outlined: true)[#i18n.formelverzeichnis],
         target: math.equation.where(block: true),
       )
     }
@@ -325,12 +367,12 @@
   body
   set page(numbering: "I")
   // Bibliography
-  show bibliography: set bibliography(title: heading(level: 1, numbering: none, outlined: true)[Literaturverzeichnis])
+  show bibliography: set bibliography(title: heading(level: 1, numbering: none, outlined: true)[#i18n.literaturverzeichnis])
   if bibliography-content != none {
     pagebreak()
     set page(numbering: "I")
     set bibliography(style: "ieee")
-    heading(level: 1, numbering: none, outlined: true)[Literaturverzeichnis]
+    heading(level: 1, numbering: none, outlined: true)[#i18n.literaturverzeichnis]
 
     show bibliography: set bibliography(title: none)
 
