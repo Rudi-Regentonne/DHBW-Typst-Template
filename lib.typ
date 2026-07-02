@@ -75,6 +75,16 @@
   )
   set text(lang: "de")
 
+  // Gender-inclusive language: No line break at gender sign
+  show ":innen": ":\u{2060}innen"
+  show ":in": ":\u{2060}in"
+  show "*innen": "*\u{2060}innen"
+  show "*in": "*\u{2060}in"
+  show "_innen": "_\u{2060}innen"
+  show "_in": "_\u{2060}in"
+  show "/-innen": "\u{2060}/-\u{2060}innen"
+  show "/-in": "\u{2060}/-\u{2060}in"
+
   set math.equation(numbering: "(1)")
   set figure(numbering: "1")
 
