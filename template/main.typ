@@ -15,7 +15,7 @@
   Kurs: "TINF2XXBX",
   Sperrvermerk: false,
   Zusammenfassung: include "content/abstract.typ",
-  //Was: "Projekt-/Studien-/Bachleorarbeit",
+  //Was: "Projekt-/Studien-/Bachelorarbeit",
   //Was: "Projektarbeit",
   //Was: "Studienarbeit",
   //Was: "Bachelorarbeit",
@@ -46,4 +46,3 @@
 = Anhang
 
 #include "content/anhang.typ"
-

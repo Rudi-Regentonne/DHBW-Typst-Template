@@ -12,8 +12,11 @@
   numberstyle: auto, // style function to apply to line numbers (auto, style)
   firstnumber: 1, // number of the first line (integer)
   highlight: none, // line numbers to highlight (none, array of integer)
+  code_label: none,
+  breakable: false,
   content,
 ) = {
+  show figure.where(kind: "listing"): set block(breakable: breakable)
   if hlcolor == auto {
     hlcolor = bgcolor.darken(10%)
   }
@@ -33,35 +36,68 @@
     inset: inset,
     clip: false,
     {
-      let (columns, align, make_row) = {
-        if numbers {
-          // line numbering requested
-          if numberstyle == auto {
-            numberstyle = text.with(style: "italic", slashed-zero: false, size: .6em)
-          }
-          (
-            (auto, 1fr),
-            (right + top, left + top),
-            e => {
-              let (i, l) = e
-              let n = i + firstnumber
-              let n_str = if (calc.rem(n, stepnumber) == 0) or (numberfirstline and i == 0) {
-                numberstyle(str(n))
-              } else { none }
-              (n_str + h(.5em), raw(lang: content.lang, l))
-            },
-          )
-        } else {
-          (
-            (1fr,),
-            (left,),
-            e => {
-              let (i, l) = e
-              raw(lang: content.lang, l)
-            },
-          )
-        }
+          set par(justify: false)
+  let (columns, align, make_row) = {
+    if numbers {
+      if numberstyle == auto {
+        numberstyle = text.with(
+          style: "italic",
+          slashed-zero: false,
+          size: .6em,
+        )
       }
+      
+      (
+        (auto, 1fr),
+        (right + top, left + top),
+        e => {
+          let (i, l) = e
+          let m = l.match(regex("^ +"))
+          let leading = if m != none { m.text.len() } else { 0 }
+          let trimmed = if leading > 0 { l.slice(leading) } else { l }
+          let n = i + firstnumber
+          let n_str = if (
+            (
+              calc.rem(n, stepnumber) == 0
+            )
+              or (
+                numberfirstline and i == 0
+              )
+          ) {
+            numberstyle(str(n))
+          } else {
+            none
+          }
+          
+          (
+            n_str + h(.5em),
+            context {
+              let space-width = measure(raw(" ")).width
+              let indent = leading * space-width
+              pad(left: indent, raw(lang: content.lang, trimmed))
+            },
+          )
+        },
+      )
+    } else {
+      (
+        (1fr,),
+        (left,),
+        e => {
+          let (i, l) = e
+          let m = l.match(regex("^ +"))
+          let leading = if m != none { m.text.len() } else { 0 }
+          let trimmed = if leading > 0 { l.slice(leading) } else { l }
+          
+          context {
+            let space-width = measure(raw(" ")).width
+            let indent = leading * space-width
+            pad(left: indent, raw(lang: content.lang, trimmed))
+          }
+        },
+      )
+    }
+  }
       table(
         stroke: none,
         columns: columns,
@@ -80,10 +116,17 @@
       )
     },
   )
-  figure(
+  let fig = figure(
     code_block,
-    caption: caption, // Hier wird die Caption übergeben
-    kind: "listing", // WICHTIG: Damit dein outline es findet
-    supplement: [Quellcode], // Das Wort vor der Nummer (z.B. "Listing 1")
+    caption: caption,
+    kind: "listing",
+    supplement: [Quellcode],
   )
+  
+  // Label direkt anhängen
+  if code_label != none [
+    #fig #label(code_label)
+  ] else {
+    fig
+  }
 }
