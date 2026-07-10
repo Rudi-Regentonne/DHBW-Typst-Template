@@ -30,11 +30,9 @@
   import "@preview/hydra:0.6.2": hydra
   import "@preview/acrostiche:0.7.0": *
 
-
   if acronyms.len() > 0 {
     init-acronyms(acronyms)
   }
-
 
   let shrink_to_fit(content, max-width, base: 12pt, min-size: 8pt) = {
     let natural = measure(text(size: base, content)).width
@@ -49,7 +47,7 @@
   }
   set page(
     paper: "a4",
-    margin: (x: 1.8cm, y: 1.5cm),
+    margin: (x: 1.8cm, top: 2.5cm, bottom: 2cm),
     header: context {
       let headings = query(selector(heading).after(here()))
       if (counter(page).get().first() > 2 and headings.len() > 0) {
@@ -89,89 +87,88 @@
   set figure(numbering: "1")
 
   if Deckblatt == none {
+    // Title page
+    box(
+      height: 2cm,
+      grid(
 
-  // Title page
-  box(
-    height: 2cm,
-    grid(
+        columns: (1fr, 1fr),
 
-      columns: (1fr, 1fr),
+        [
+          #align(left)[
+            #if Firmenlogo != none {
+              Firmenlogo
+            }
+          ]
+        ],
+        [
 
-      [
-        #align(left)[
-          #if Firmenlogo != none {
-            Firmenlogo
-          }
-        ]
-      ],
-      [
+          #align(right)[
+            #if Hochschullogo == none {
+              image("template-files/dhbw-logo.png")
+            } else {
+              Hochschullogo
+            }
+          ]
+        ],
+      ),
+    )
 
-        #align(right)[
-          #if Hochschullogo == none {
-            image("template-files/dhbw-logo.png")
-          } else {
-            Hochschullogo
-          }
-        ]
-      ],
-    ),
-  )
+    align(center, [
+      #set par(justify: false)
+      #text(24pt, weight: "bold", Titel)
+      #v(1cm)
+      #smallcaps(text(24pt, Was))
+      #v(1cm)
 
-  align(center, [
-    #text(24pt, weight: "bold", Titel)
-    #v(1cm)
-    #smallcaps(text(24pt, Was))
-    #v(1cm)
-
-    #text(16pt)[
-      #if Pruefung != none {
-        [für das Modul]
-        v(0.5cm)
-        Pruefung
-        v(0.5cm)
-      }
-      des Studienganges #Studiengang
+      #text(16pt)[
+        #if Pruefung != none {
+          [für das Modul]
+          v(0.5cm)
+          Pruefung
+          v(0.5cm)
+        }
+        des Studienganges #Studiengang
+        #v(0.5cm)
+        an der
+        #v(0.5cm)
+        #if Hochschule == none {
+          [Dualen Hochschule Baden-Württemberg Karlsruhe]
+        } else {
+          Hochschule
+        }
+      ]
       #v(0.5cm)
-      an der
+      #text(16pt)[von]
       #v(0.5cm)
-      #if Hochschule == none {
-        [Dualen Hochschule Baden-Württemberg Karlsruhe]
-      } else {
-        Hochschule
+      #text(16pt, weight: "bold")[#Autor]
+      #v(1cm)
+      #if AbgabeDatum != none {
+        text(14pt)[Abgabedatum #AbgabeDatum]
       }
-    ]
-    #v(0.5cm)
-    #text(16pt)[von]
-    #v(0.5cm)
-    #text(16pt, weight: "bold")[#Autor]
-    #v(1cm)
-    #if AbgabeDatum != none {
-      text(14pt)[Abgabedatum #AbgabeDatum]
-    }
-  ])
-  v(1fr)
+    ])
+    v(1fr)
 
+    let rows = (
+      ("Bearbeitungszeitraum", Dauer),
+      ("Matrikelnummer", MatrikelNummer),
+      ("Kurs", Kurs),
+      ("Ausbildungsfirma", FirmenName),
+      ("", if FirmenName != none { Stadt }),
+      ("Betreuer der Ausbildungsfirma", BetreuerFirma),
+      ("Gutachter der Studienakademie", BetreuerDHBW),
+    ).filter(it => it.at(1) != none)
+    table(
+      columns: (50%, 50%),
 
-  let rows = (
-    ("Bearbeitungszeitraum", Dauer),
-    ("Matrikelnummer", MatrikelNummer),
-    ("Kurs", Kurs),
-    ("Ausbildungsfirma", FirmenName),
-    ("", if FirmenName != none { Stadt }),
-    ("Betreuer der Ausbildungsfirma", BetreuerFirma),
-    ("Gutachter der Studienakademie", BetreuerDHBW),
-  ).filter(it => it.at(1) != none)
-  table(
-    columns: (50%, 50%),
+      align: (left, left),
 
-    align: (left, left),
+      stroke: 0pt + gray,
 
-    stroke: 0pt + gray,
-
-    inset: 6pt,
-    // Zellinnenabstand
-    ..rows.flatten().map(it => [#it]),
-  )
+      inset: 6pt,
+      // Zellinnenabstand
+      ..rows.flatten().map(it => [#it]),
+    )
   } else {
     Deckblatt
   }
@@ -189,14 +186,12 @@
     Erklaerung: Erklaerung,
   )
 
-
   set page(numbering: "I")
   // Abstract
   if Zusammenfassung != none {
     pagebreak()
     Zusammenfassung
   }
-
 
   // Table of Contents
   pagebreak()
@@ -216,7 +211,6 @@
     } else {
       v(0.5em)
     }
-
 
     it.body
 
@@ -245,9 +239,18 @@
     #v(0.8em)
   ]
 
+  // First-level headings (Kapitel) always start on a new page
+  show heading.where(level: 1): it => {
+    pagebreak(weak: true)
+    it
+  }
+
+  // Indent all lists
+  set list(indent: 1.5em)
+  set enum(indent: 1.5em)
+
   show outline.entry.where(level: 1): it => {
     v(1.2em, weak: true)
-
 
     text(stroke: 0.25pt, link(it.element.location(), it.indented(
       it.prefix(),
@@ -265,7 +268,6 @@
     it.indented(it.prefix(), it.inner()),
   )
 
-
   context {
     // List of figures
     show outline.entry.where(
@@ -281,10 +283,8 @@
     }
     // List of acronyms
 
-
     if (acronyms != none and acronyms.len() > 0) {
       pagebreak()
-
 
       print-index(
         row-gutter: 1em,
@@ -313,7 +313,6 @@
       )
     }
 
-
     // List of formulas
 
     // Anzahl der blockartigen Gleichungen ermitteln
@@ -328,7 +327,6 @@
       )
     }
   }
-
 
   set page(numbering: "1")
 
@@ -346,4 +344,9 @@
 
     bibliography-content
   }
+}
+
+#let small-todo = (..args) => {
+  import "@preview/dashy-todo:0.1.3": todo
+  text(size: 0.8em)[#todo(..args)]
 }
