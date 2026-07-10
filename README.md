@@ -1,3 +1,5 @@
+🇩🇪 Deutsch | [🇬🇧 English](README.en.md)
+
 # Typst template für DHBW oder andere Hochschulen/Unis (in Anlehnung an die LaTeX-Vorlage)
 
 Diese Vorlage ist eine Typst-Implementierung, die sich am Aufbau/Look der gängigen DHBW-LaTeX-Vorlage orientiert (Deckblatt, Verzeichnisse, Nummerierungen, typische Struktur). Kann allerdings auch für andere Hochschulen/Unis angepasst werden.
@@ -14,8 +16,8 @@ Diese Vorlage ist eine Typst-Implementierung, die sich am Aufbau/Look der gängi
 
 Bis das im Typst universe verfügbar ist kann es lokal in diese Ordner eingefügt werden
 
-- Linux: ~/.local/share/typst/packages/turbocharged-dhbw/bericht/0.1.0
-- Windows: Wenn du mit dem 4-stündigen Zwangs-Update fertig bist, hier entlang: %APPDATA%\typst\packages\local\turbocharged-dhbw\0.1.0
+- Linux: ~/.local/share/typst/packages/local/turbocharged-dhbw/0.2.0
+- Windows: Wenn du mit dem 4-stündigen Zwangs-Update fertig bist, hier entlang: %APPDATA%\typst\packages\local\turbocharged-dhbw\0.2.0
 - macOS: : Merkste selber, wa? (Kauf dir halt 'nen vernünftigen Rechner).
 
 ## Typst Doku
