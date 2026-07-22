@@ -86,8 +86,9 @@ Beispiel: #small-todo[Quelle für diese Aussage ergänzen]
 Inline kann mit einfachen Backticks eingebunden werden ``` `Inlinecode` ```.
 #box[
 
-  Für Codeblöcke kann entweder ````typst ```Sprache code``` ```` oder ````typst
-    #import "../template-files/listings-lib.typ": code
+  Für Codeblöcke kann entweder ````typst ```Sprache code``` ```` oder 
+  #code(firstnumber: 1, stepnumber: 1, numbers: true, caption: "Beispielaufruf")[````typst
+    #import "@local/turbocharged-dhbw:0.2.0": code
     #code(
       firstnumber: 1,
       stepnumber: 1,
@@ -101,7 +102,7 @@ Inline kann mit einfachen Backticks eingebunden werden ``` `Inlinecode` ```.
       let korrektur_dauer = std::time::Duration::from_secs(u64::MAX);
     }
     ```]
-  ````
+  ````]
 
 ]
 
@@ -281,8 +282,9 @@ Example: #small-todo[Add a source for this claim]
 Inline code can be included with simple backticks ``` `inline code` ```.
 #box[
 
-  For code blocks, either ````typst ```language code``` ```` or ````typst
-    #import "../template-files/listings-lib.typ": code
+  For code blocks, either ````typst ```language code``` ```` or 
+  #code(firstnumber: 1, stepnumber: 1, numbers: true, caption: "Example call")[````typst
+    #import "@local/turbocharged-dhbw:0.2.0": code
     #code(
       firstnumber: 1,
       stepnumber: 1,
@@ -296,7 +298,7 @@ Inline code can be included with simple backticks ``` `inline code` ```.
       let grading_duration = std::time::Duration::from_secs(u64::MAX);
     }
     ```]
-  ````
+  ````]
 
 ]
 

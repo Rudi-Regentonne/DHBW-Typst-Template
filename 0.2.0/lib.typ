@@ -101,6 +101,9 @@
     lang: lang,
   )
 
+  show figure.where(kind: table): set block(breakable: true)
+  set table.cell(breakable: false)
+
   show table.cell.where(y: 0): strong
 
   show table: it => {

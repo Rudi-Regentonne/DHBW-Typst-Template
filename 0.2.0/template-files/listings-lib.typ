@@ -27,11 +27,19 @@
   if highlight == none {
     highlight = ()
   }
+  if numberstyle == auto {
+    numberstyle = text.with(
+      style: "italic",
+      slashed-zero: false,
+    )
+  }
   let final_strokecolor = if strokecolor == auto {
     0.5pt + bgcolor.darken(20%)
   } else {
     strokecolor
   }
+  let line_count = content.text.split("\n").len()
+  let last_number = firstnumber + line_count - 1
   let code_block = block(
     width: width,
     fill: bgcolor,
@@ -40,84 +48,45 @@
     inset: inset,
     clip: false,
     {
-          set par(justify: false)
-  let (columns, align, make_row) = {
-    if numbers {
-      if numberstyle == auto {
-        numberstyle = text.with(
-          style: "italic",
-          slashed-zero: false,
-          size: .6em,
-        )
-      }
-      
-      (
-        (auto, 1fr),
-        (right + top, left + top),
-        e => {
-          let (i, l) = e
-          let m = l.match(regex("^ +"))
-          let leading = if m != none { m.text.len() } else { 0 }
-          let trimmed = if leading > 0 { l.slice(leading) } else { l }
-          let n = i + firstnumber
-          let n_str = if (
-            (
-              calc.rem(n, stepnumber) == 0
-            )
-              or (
-                numberfirstline and i == 0
-              )
-          ) {
-            numberstyle(str(n))
-          } else {
-            none
-          }
-          
-          (
-            n_str + h(.5em),
-            context {
-              let space-width = measure(raw(" ")).width
-              let indent = leading * space-width
-              pad(left: indent, raw(lang: content.lang, trimmed))
-            },
+      set par(justify: false)
+      set align(left)
+      context {
+        let outer-font = text.font
+        let number = n => text(font: outer-font, numberstyle(str(n)))
+        let numwidth = if numbers {
+          measure(number(last_number)).width
+        } else {
+          0pt
+        }
+        let space-width = measure(raw(lang: content.lang, " ")).width
+        show raw.line: it => {
+          let n = it.number - 1 + firstnumber
+          let show_number = numbers and (
+            calc.rem(n, stepnumber) == 0 or (numberfirstline and it.number == 1)
           )
-        },
-      )
-    } else {
-      (
-        (1fr,),
-        (left,),
-        e => {
-          let (i, l) = e
-          let m = l.match(regex("^ +"))
-          let leading = if m != none { m.text.len() } else { 0 }
-          let trimmed = if leading > 0 { l.slice(leading) } else { l }
-          
-          context {
-            let space-width = measure(raw(" ")).width
-            let indent = leading * space-width
-            pad(left: indent, raw(lang: content.lang, trimmed))
-          }
-        },
-      )
-    }
-  }
-      grid(
-        stroke: none,
-        columns: columns,
-        rows: (auto,),
-        gutter: 0pt,
-        inset: 2pt,
-        align: (col, _) => align.at(col),
-        fill: (c, row) => if (row + firstnumber) in highlight { hlcolor } else { none },
-        ..content
-          .text
-          .split("\n")
-          .enumerate()
-          .map(make_row)
-          .flatten()
-          .map(c => if c.has("text") and c.text == "" { v(1em) } else { c })
-      )
+          let bg = if n in highlight { hlcolor } else { none }
+          let m = it.text.match(regex("^ +"))
+          let indent_chars = if m != none { m.text.len() } else { 0 }
+          let body = par(hanging-indent: indent_chars * space-width, it.body)
+          box(width: 100%, fill: bg, outset: (y: 2pt), {
+            if numbers {
+              grid(
+                columns: (numwidth, 1fr),
+                column-gutter: .5em,
+                align(right, if show_number {
+                  number(n)
+                } else {
+                  none
+                }),
+                body,
+              )
+            } else {
+              body
+            }
+          })
+        }
+        raw(lang: content.lang, content.text)
+      }
     },
   )
   let fig = figure(
