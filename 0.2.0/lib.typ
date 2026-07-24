@@ -122,7 +122,7 @@
         left: none,
         right: none,
 
-        top: if y == 1 { 0.7pt + black } else { none },
+        top: if y == 0 { 0.7pt + black } else { none },
         bottom: if y == 0 { 0.7pt + black } else { none },
       ),
 

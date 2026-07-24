@@ -24,15 +24,15 @@
     set text(20pt)
     set par(justify: true, leading: 1em, spacing: 1.5em)
 
-      if it.numbering != none {
-        v(1em)
-        text(20pt)[#translations.chapter #counter(heading).get().first()]
-        v(1em)
-      } else {
-        v(0.5em)
-      }
-      it.body
-      v(0.8em)
+    if it.numbering != none {
+      v(1em)
+      text(20pt)[#translations.chapter #counter(heading).get().first()]
+      v(1em)
+    } else {
+      v(0.5em)
+    }
+    it.body
+    v(0.8em)
   }
 
   // Headings level 2
@@ -59,7 +59,6 @@
     #v(0.8em)
   ]
 
-
   // Indent all lists
   set list(indent: 1.5em)
   set enum(indent: 1.5em)
@@ -77,7 +76,7 @@
     )))
   }
 
-  outline()
+  outline(depth: 3)
 
   // reset styles
   show outline.entry: it => link(
@@ -118,7 +117,6 @@
         title: heading(level: 1, numbering: none, outlined: true)[#translations.list-of-tables],
         target: figure.where(kind: table),
       )
-
     }
 
     // List of Listings
@@ -139,7 +137,6 @@
         title: heading(level: 1, numbering: none, outlined: true)[#translations.list-of-equations],
         target: math.equation.where(block: true),
       )
-
     }
   }
 
@@ -157,7 +154,11 @@
   set page(numbering: "I")
 
   // Bibliography
-  show bibliography: set bibliography(title: heading(level: 1, numbering: none, outlined: true)[#translations.bibliography-title])
+  show bibliography: set bibliography(title: heading(
+    level: 1,
+    numbering: none,
+    outlined: true,
+  )[#translations.bibliography-title])
   if bibliography-content != none {
     pagebreak()
     set page(numbering: "I")
